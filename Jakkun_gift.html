@@ -129,15 +129,15 @@
   <div style="display:flex; align-items:center; justify-content:center; gap:20px;">
     <div style="max-width:340px; background:white; color:black; padding:15px; border-radius:15px; position:relative; font-size:17px; line-height:1.4; font-weight:bold;">
       Yoo 👋 Parabéns Jakkun!<br><br>
-      Você irá receber meu presente de Dia de Ação de Graças hehe.<br>
-      Mas embora seja Dia de Ação de Graças... nada é de graça 😎<br>
-      Responda corretamente essas perguntas e receba seu presente!
+      Você irá receber meu presente de Dia de Ação de Graças hehe<br>
+      Responda corretamente essas perguntas e receba seu presente!<br>
+      Voce é livre para escolher oque quizer 😉
       <div style="content:''; position:absolute; right:-20px; top:40%; width:0; height:0; border-top:15px solid transparent; border-bottom:15px solid transparent; border-left:20px solid white;"></div>
     </div>
     <img src="https://i.pinimg.com/1200x/5b/8d/39/5b8d392e79fda40a7034c5344689ec2b.jpg" style="width:140px; border-radius:15px;">
   </div>
 
-  <button class="btn" id="start-btn">Começar</button>
+  <button class="btn" id="start-btn" style="margin-top:18px;">Começar</button>
 </div>
 
 <div id="quiz-box">
@@ -160,19 +160,19 @@
 <script>
 const quiz = [
     {
-        q: "Qual é o melhor Gato do FG?",
+        q: "Qual é o melhor gato do FG em sua opinião?",
         options: ["Unfeignerdy", "JustMeowMeow", "Absurdo_N", "Zayvex"],
         correct: "Unfeignerdy"
     },
     {
-        q: "Qual é o verdadeiro vencedor do The Last Person?",
+        q: "Qual é o verdadeiro vencedor do The Last Person em sua opinião",
         options: ["JustDefending", "Unfeignerdy", "Barrycade", "Snowblood"],
         correct: "Unfeignerdy"
     },
     {
         q: "Qual desses usuários é o seu preferido?",
-        options: ["Mr.Libra", "Crescent", "IPreferEcchi", "Winfeignerd"],
-        correct: "Winfeignerd"
+        options: ["Mr.Libra", "Crescent", "IPreferEcchi", "Goatnerd"],
+        correct: "Goatnerd"
     }
 ];
 
@@ -217,49 +217,91 @@ function loadQuestion() {
 }
 
 function flee(btn, ev) {
-    const box = document.getElementById("quiz-box");
-    const rect = box.getBoundingClientRect();
-
     const mx = ev.clientX;
     const my = ev.clientY;
 
-    const bx = btn.getBoundingClientRect().left + btn.offsetWidth / 2;
-    const by = btn.getBoundingClientRect().top + btn.offsetHeight / 2;
+    const btnRect = btn.getBoundingClientRect();
+    const bx = btnRect.left + btn.offsetWidth / 2;
+    const by = btnRect.top + btn.offsetHeight / 2;
 
-    let dx = bx - mx;
-    let dy = by - my;
+    const dist = Math.sqrt((bx - mx) ** 2 + (by - my) ** 2) || 1;
 
-    const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+    // Se o mouse chegou muito perto → TELEPORTA
+    if (dist < 140) {
+        const maxX = window.innerWidth - btn.offsetWidth - 30;
+        const maxY = window.innerHeight - btn.offsetHeight - 30;
 
-    const speed = 80;
+        const randomX = Math.random() * maxX;
+        const randomY = Math.random() * maxY;
 
-    dx = (dx / dist) * speed;
-    dy = (dy / dist) * speed;
+        btn.style.transition = "none"; // sem animação — teleporte instantâneo
+        btn.style.position = "fixed";
+        btn.style.left = randomX + "px";
+        btn.style.top = randomY + "px";
 
-    let newX = btn.getBoundingClientRect().left + dx;
-    let newY = btn.getBoundingClientRect().top + dy;
+        // pequena animação de “flash”
+        btn.style.opacity = "0";
+        setTimeout(() => {
+            btn.style.transition = "opacity 0.12s ease";
+            btn.style.opacity = "1";
+        }, 20);
 
-    const minX = rect.left + 20;
-    const maxX = rect.right - btn.offsetWidth - 20;
-    const minY = rect.top + 80;
-    const maxY = rect.bottom - btn.offsetHeight - 20;
+        return;
+    }
 
-    newX = Math.min(Math.max(newX, minX), maxX);
-    newY = Math.min(Math.max(newY, minY), maxY);
+    // Caso esteja longe demais → movimento mínimo normal
+    const speed = 160 + Math.random() * 250;
 
+    let dx = (bx - mx) / dist * speed;
+    let dy = (by - my) / dist * speed;
+
+    const newX = Math.min(Math.max(btnRect.left + dx, 0), window.innerWidth - btn.offsetWidth);
+    const newY = Math.min(Math.max(btnRect.top + dy, 0), window.innerHeight - btn.offsetHeight);
+
+    btn.style.transition = "left 0.2s ease-out, top 0.2s ease-out";
     btn.style.position = "fixed";
     btn.style.left = newX + "px";
     btn.style.top = newY + "px";
 }
 
+
+const correctMessages = [
+    "😺Por causa do meu terno certo heheh",
+    "🙀 Serio? embora o JD tenha ganhado 2 vezes seguidas fico feliz que alguem reconheça o true winner :)",
+    "😸🤭 Thank youuu, eu sempre soube que voce é meu fan XD, foi por isso que me matou aquela vez né"
+];
+
 function showCorrectMessage() {
     const msg = document.getElementById("correct-msg");
-    msg.innerText = "Sim, definitivamente o Unfeignerdy é mais bonito 😎";
+
+    // Mensagem aleatória
+    const randomMsg = correctMessages[Math.floor(Math.random() * correctMessages.length)];
+    msg.innerText = randomMsg;
     msg.style.display = "block";
 
+    // ➤ DESATIVAR TODAS AS OPÇÕES (impede bugs de múltiplos cliques)
+    const allBtns = document.querySelectorAll("#options .btn");
+    allBtns.forEach(b => {
+        b.style.pointerEvents = "none";   // desativa clique
+    });
+
+    // ➤ SUMIR COM TODAS AS ERRADAS
+    allBtns.forEach(btn => {
+        if (btn.innerText !== quiz[i].correct) {
+            btn.style.transition = "opacity 0.25s ease, transform 0.25s ease";
+            btn.style.opacity = "0";
+            btn.style.transform = "scale(0.6)";
+            setTimeout(() => btn.style.display = "none", 250);
+        }
+    });
+
+    // Exibir botão de próxima pergunta
     const nextBtn = document.getElementById("next-btn");
     nextBtn.style.display = "inline-block";
 }
+
+
+
 
 function nextQuestion() {
     i++;
@@ -394,3 +436,4 @@ function showThanksgivingGift() {
 
 </body>
 </html>
+
