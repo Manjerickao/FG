@@ -226,7 +226,6 @@ function flee(btn, ev) {
 
     const dist = Math.sqrt((bx - mx) ** 2 + (by - my) ** 2) || 1;
 
-    // Se o mouse chegou muito perto → TELEPORTA
     if (dist < 140) {
         const maxX = window.innerWidth - btn.offsetWidth - 30;
         const maxY = window.innerHeight - btn.offsetHeight - 30;
@@ -234,12 +233,11 @@ function flee(btn, ev) {
         const randomX = Math.random() * maxX;
         const randomY = Math.random() * maxY;
 
-        btn.style.transition = "none"; // sem animação — teleporte instantâneo
+        btn.style.transition = "none"; 
         btn.style.position = "fixed";
         btn.style.left = randomX + "px";
         btn.style.top = randomY + "px";
 
-        // pequena animação de “flash”
         btn.style.opacity = "0";
         setTimeout(() => {
             btn.style.transition = "opacity 0.12s ease";
@@ -249,7 +247,6 @@ function flee(btn, ev) {
         return;
     }
 
-    // Caso esteja longe demais → movimento mínimo normal
     const speed = 160 + Math.random() * 250;
 
     let dx = (bx - mx) / dist * speed;
@@ -274,18 +271,15 @@ const correctMessages = [
 function showCorrectMessage() {
     const msg = document.getElementById("correct-msg");
 
-    // Mensagem aleatória
     const randomMsg = correctMessages[Math.floor(Math.random() * correctMessages.length)];
     msg.innerText = randomMsg;
     msg.style.display = "block";
 
-    // ➤ DESATIVAR TODAS AS OPÇÕES (impede bugs de múltiplos cliques)
     const allBtns = document.querySelectorAll("#options .btn");
     allBtns.forEach(b => {
-        b.style.pointerEvents = "none";   // desativa clique
+        b.style.pointerEvents = "none";   
     });
 
-    // ➤ SUMIR COM TODAS AS ERRADAS
     allBtns.forEach(btn => {
         if (btn.innerText !== quiz[i].correct) {
             btn.style.transition = "opacity 0.25s ease, transform 0.25s ease";
@@ -295,7 +289,6 @@ function showCorrectMessage() {
         }
     });
 
-    // Exibir botão de próxima pergunta
     const nextBtn = document.getElementById("next-btn");
     nextBtn.style.display = "inline-block";
 }
