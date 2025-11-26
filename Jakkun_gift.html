@@ -8,7 +8,7 @@
         margin: 0;
         padding: 0;
         font-family: Arial, sans-serif;
-        background: url('https://i.pinimg.com/1200x/cd/a1/82/cda182085a6a106d2257280d136d095b.jpg') no-repeat center center fixed;
+        background: url('https://img4.gelbooru.com//samples/87/b5/sample_87b579bd9af5301a27dec5feed78a3d2.jpg') no-repeat center center fixed;
         background-size: cover;
         display: flex;
         justify-content: center;
@@ -128,10 +128,10 @@
 <div id="start-screen" style="text-align:center; background: rgba(0,0,0,0.75); padding:25px; border-radius:20px;">
   <div style="display:flex; align-items:center; justify-content:center; gap:20px;">
     <div style="max-width:340px; background:white; color:black; padding:15px; border-radius:15px; position:relative; font-size:17px; line-height:1.4; font-weight:bold;">
-      Yoo 👋 Parabéns Jakkun!<br><br>
-      Você irá receber meu presente de Dia de Ação de Graças hehe<br>
-      Responda corretamente essas perguntas e receba seu presente!<br>
-      Voce é livre para escolher oque quizer 😉
+      Yoo Jakkun 👋  happy Thanksgiving!<br><br>
+      Looks like you were lucky enough to get my super gift hehe<br>
+      But first answer the following questions<br>
+      You are free to choose whatever you want 😉
       <div style="content:''; position:absolute; right:-20px; top:40%; width:0; height:0; border-top:15px solid transparent; border-bottom:15px solid transparent; border-left:20px solid white;"></div>
     </div>
     <img src="https://i.pinimg.com/1200x/5b/8d/39/5b8d392e79fda40a7034c5344689ec2b.jpg" style="width:140px; border-radius:15px;">
@@ -152,7 +152,7 @@
     <div class="options" id="options"></div>
 
     <div id="correct-msg"></div>
-    <button id="next-btn" class="btn">Próxima Pergunta</button>
+    <button id="next-btn" class="btn">Next Question</button>
 
     <div id="gift"></div>
 </div>
@@ -160,19 +160,19 @@
 <script>
 const quiz = [
     {
-        q: "Qual é o melhor gato do FG em sua opinião?",
-        options: ["Unfeignerdy", "JustMeowMeow", "Absurdo_N", "Zayvex"],
+        q: "Who is the most handsome user on FG??",
+        options: ["Unfeignerdy", "IPreferEcchi", "Absurdo_N", "You"],
         correct: "Unfeignerdy"
     },
     {
-        q: "Qual é o verdadeiro vencedor do The Last Person em sua opinião",
-        options: ["JustDefending", "Unfeignerdy", "Barrycade", "Snowblood"],
-        correct: "Unfeignerdy"
-    },
-    {
-        q: "Qual desses usuários é o seu preferido?",
-        options: ["Mr.Libra", "Crescent", "IPreferEcchi", "Goatnerd"],
+        q: "Who is the true Goat of FG in your opinion?",
+        options: ["JustDefending", "Goatnerd", "Barrycade", "Snowblood"],
         correct: "Goatnerd"
+    },
+    {
+        q: "You can only choose one of these people to save from the end of the world. Who would you choose?",
+        options: ["Mia Khalifa", "Your mom", "Exusial", "Unfeignerdy"],
+        correct: "Unfeignerdy"
     }
 ];
 
@@ -182,9 +182,9 @@ let speedMultiplier = 2.5;
 function loadQuestion() {
     const nextBtn = document.getElementById("next-btn");
     if (i === quiz.length - 1) {
-        nextBtn.textContent = "Receber presente";
+        nextBtn.textContent = "Get gift 🎁";
     } else {
-        nextBtn.textContent = "Próxima Pergunta";
+        nextBtn.textContent = "Next Question";
     }
     const q = quiz[i];
 
@@ -237,7 +237,7 @@ function flee(btn, ev) {
         btn.style.position = "fixed";
         btn.style.left = randomX + "px";
         btn.style.top = randomY + "px";
-
+        
         btn.style.opacity = "0";
         setTimeout(() => {
             btn.style.transition = "opacity 0.12s ease";
@@ -263,16 +263,15 @@ function flee(btn, ev) {
 
 
 const correctMessages = [
-    "😺Por causa do meu terno certo heheh",
-    "🙀 Serio? embora o JD tenha ganhado 2 vezes seguidas fico feliz que alguem reconheça o true winner :)",
-    "😸🤭 Thank youuu, eu sempre soube que voce é meu fan XD, foi por isso que me matou aquela vez né"
+    "😺 Hehe thanks I agree with you",
+    "🙀 Agreeee!! screw JD and Barry, the true GOAT is me, and Snow comes right after in second place heheh",
+    "😸🤭 Thank youuu haha even though you killed me in that game hosted by Wendy, I think you're now worthy of receiving my gift"
 ];
 
 function showCorrectMessage() {
     const msg = document.getElementById("correct-msg");
 
-    const randomMsg = correctMessages[Math.floor(Math.random() * correctMessages.length)];
-    msg.innerText = randomMsg;
+    msg.innerText = correctMessages[i];
     msg.style.display = "block";
 
     const allBtns = document.querySelectorAll("#options .btn");
@@ -294,8 +293,6 @@ function showCorrectMessage() {
 }
 
 
-
-
 function nextQuestion() {
     i++;
     if (i < quiz.length) loadQuestion();
@@ -303,13 +300,13 @@ function nextQuestion() {
 }
 
 function showGift() {
-    document.getElementById("question").innerText = "🎁 Toque na caixa para abrir seu presente:";
+    document.getElementById("question").innerText = "🎁 Tap the box to open your gift:";
     document.getElementById("options").innerHTML = "";
     document.getElementById("correct-msg").style.display = "none";
     document.getElementById("next-btn").style.display = "none";
     document.getElementById("gift").innerHTML = `
-            <h2>🎉 Parabéns!</h2>
-            Seu presente de Ação de Graças é este Catburger:<br><br>
+            <h2>🎉 Congratulations!</h2>
+            Congrats for snagging this super gift!:<br><br>
             <img src="https://i.pinimg.com/736x/77/aa/6e/77aa6e0b27539ffa404863a3acf0dc3b.jpg" style="width:260px; border-radius:15px; box-shadow:0 0 15px white;">
         `;
 
@@ -343,7 +340,7 @@ function showGift() {
         createParticles(particlesContainer);
 
         setTimeout(() => {
-            document.getElementById('gift').innerHTML = "✨ Seu código-surpresa: <b>ABCDE12345</b> ✨";
+            document.getElementById('gift').innerHTML = "gg: <b>ABCDE12345</b> ✨";
             setTimeout(() => finalBox.classList.remove('pulse','shine'), 1200);
         }, 700);
 
@@ -415,7 +412,7 @@ function showThanksgivingGift() {
 
     overlay.appendChild(img);
     const msg = document.createElement('div');
-    msg.textContent = 'Parabéns por ganhar esse incrível Cat Burger!';
+    msg.textContent = 'Congrats for snagging this super gift!';
     msg.className = 'cat-msg';
     overlay.appendChild(msg);
 
@@ -429,4 +426,3 @@ function showThanksgivingGift() {
 
 </body>
 </html>
-
